@@ -5,9 +5,10 @@ Created on Jun 28, 2016
 '''
 import threading
 import time
+from characters.Neonpewpew import Neonpewpew
 
 exitFlag = 0
-
+charNeonpewpew = Neonpewpew()
 class MainThread (threading.Thread):
     def __init__(self, threadID, name, counter):
         threading.Thread.__init__(self)
