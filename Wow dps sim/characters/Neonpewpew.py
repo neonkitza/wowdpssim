@@ -3,8 +3,10 @@ Created on Jun 27, 2016
 
 @author: Neonkitza
 '''
-'''from spells import Spell
-from spells import SpellType'''
+
+s
+from spells.SpellType import SpellType
+
 
 class Neonpewpew:
     int = 4380
@@ -22,6 +24,11 @@ class Neonpewpew:
     haste = 1326
     mastery = 1371
     multistrike = 171
+    spellList = {}
+    castSpellList = {}
+    castedSpellList = []
+    buffList = {}
+    phase = "burst"
     
     def __init__(self):
         self._name = "Neonpewpew"
@@ -58,6 +65,9 @@ class Neonpewpew:
         
     def __init_spells__(self):
         return 0
-
 charNeonpewpew = Neonpewpew()
+totalDMG = 0
+endTime = 300
+totalCastTime = 0
+
         
