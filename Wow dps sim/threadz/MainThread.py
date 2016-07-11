@@ -5,10 +5,19 @@ Created on Jun 28, 2016
 '''
 import threading
 import time
-from characters.Neonpewpew import Neonpewpew
+from characters.Neonpewpew import charNeonpewpew, totalCastTime, endTime
+from allSpells.ArcaneBarrage import ArcaneBarrage
+from allSpells.ArcaneBlast import ArcaneBlast
+from allSpells.ArcaneCharge import ArcaneCharge
+from allSpells.ArcaneExplosion import ArcaneExplosion
+from allSpells.ArcaneMissiles import ArcaneMissiles
+from spells.SpellType import SpellType
+
 
 exitFlag = 0
-charNeonpewpew = Neonpewpew()
+global charNeonpewpew
+global totalCastTime
+global endTime
 class MainThread (threading.Thread):
     def __init__(self, threadID, name, counter):
         threading.Thread.__init__(self)
@@ -16,25 +25,32 @@ class MainThread (threading.Thread):
         self.name = name
         self.counter = counter
     def run(self):
-        while True:
+        while totalCastTime<endTime:
             self.counter+=1
             print(self.counter)
-            
 
-def print_time(threadName, delay, counter):
-    while counter:
-        if exitFlag:
-            threadName.exit()
-        time.sleep(delay)
-        print ("%s: %s" % (threadName, time.ctime(time.time())))
-        counter -= 1    
+def neonSpells():
+    a = ArcaneBarrage()
+    charNeonpewpew.spellList['ABarrage'] = a
+    a = ArcaneBlast()
+    charNeonpewpew.spellList['ABlast'] = a
+    a = ArcaneExplosion()
+    charNeonpewpew.spellList['AExplosion'] = a
+    a = ArcaneMissiles()
+    charNeonpewpew.spellList['AMissiles'] = a
+    a = ArcaneCharge()
+    charNeonpewpew.spellList['ACharge'] = a
+    for key in charNeonpewpew.spellList:
+        if charNeonpewpew.spellList[key]._spellType == SpellType.dps:
+            charNeonpewpew.castSpellList[key] = charNeonpewpew.spellList[key]
+
+    
 
 # Create new threads
+neonSpells()
+print(charNeonpewpew.castSpellList)
 thread1 = MainThread(1, "Thread-1", 1)
-thread2 = MainThread(2, "Thread-2", 2)
 
 # Start new Threads
-thread1.start()
-thread2.start()
 
-print("Exiting Main Thread")
+thread1.start()

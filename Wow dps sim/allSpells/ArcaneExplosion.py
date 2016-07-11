@@ -19,9 +19,9 @@ class ArcaneExplosion(Spell):
         spellType = SpellType.dps
         channelTime = 0
         modifiers = None
-        listAffectedSpells = []
+        listAffectedSpells = ['Arcane Charge']
     
-        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime)
+        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True)
         
     def getDmg(self):
         d =  5*charNeonpewpew.spellPower*0.545
