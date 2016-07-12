@@ -29,9 +29,18 @@ class ArcaneBarrage(Spell):
     def getDmg(self):
         d =  5*charNeonpewpew.spellPower*0.747
         d = d+d*charNeonpewpew.masteryP*charNeonpewpew._mana/charNeonpewpew._maxMana
-        return d
-    def priority(self):
-        prio = getDmg()/super(ArcaneBarrage, self).getCastTime()/1000
         if ArcaneCharge in charNeonpewpew.buffList.values():
-            if charNeonpewpew.buffList['ACharge'].stacks < 4:
-                prio * 3
+            chargeMulti = charNeonpewpew.buffList['ACharge'].stacks
+            d=d+d*chargeMulti*0.5
+        return d
+    
+#     def priority(self):
+#         prio = self.getDmg()/super(ArcaneBarrage, self).getCastTime()/1000
+#         if ArcaneCharge in charNeonpewpew.buffList.values():
+#             if charNeonpewpew.buffList['ACharge'].stacks < 4:
+#                 prio * 3
+
+    def cast(self):
+        if ArcaneCharge in charNeonpewpew.buffList.values():       
+            charNeonpewpew.buffList['ACharge'].removeStacks() = 0
+            del charNeonpewpew.buffList['ACharge']

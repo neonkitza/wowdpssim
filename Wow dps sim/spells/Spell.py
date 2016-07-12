@@ -31,7 +31,7 @@ class Spell(object):
         self._duration = duration
         self._spellType = spellType
         self._castable = castable
-        self._priority = priority()
+        self._priority = self.priority()
         
     @abstractmethod   
     def priority(self):
@@ -51,35 +51,35 @@ class Spell(object):
             if random.randint(0,100) <= 30:'''
         if self._name == 'Arcane Blast' or self._name == 'Arcane Missiles':
             if ArcaneCharge in charNeonpewpew.buffList.values():
-                buffList['ACharge'].applyStack()
-                print("Arcane Charge stack applied"+str(buffList['ACharge'].stacks))
+                charNeonpewpew.buffList['ACharge'].applyStack()
+                print("Arcane Charge stack applied "+str(charNeonpewpew.buffList['ACharge'].stacks))
             else:
                 a=ArcaneCharge()
-                buffList['ACharge'] = a
+                charNeonpewpew.buffList['ACharge'] = a
                 print("Arcane Charge created")
         elif self._name == 'Arcane Barrage':
             if ArcaneCharge in charNeonpewpew.buffList.values():
-                del buffList['ACharge']
+                del charNeonpewpew.buffList['ACharge']
                 print("Arcane Charge deleted")
         elif self._name == 'Arcane Explosion':
             if random.randint(0,100) <= 30:
                 if ArcaneCharge in charNeonpewpew.buffList.values():
-                    buffList['ACharge'].applyStack()
-                    print("Arcane Charge stack applied"+str(buffList['ACharge'].stacks))
+                    charNeonpewpew.buffList['ACharge'].applyStack()
+                    print("Arcane Charge stack applied "+str(charNeonpewpew.buffList['ACharge'].stacks))
                 else:
                     a=ArcaneCharge()
-                    buffList['ACharge'] = a
+                    charNeonpewpew.buffList['ACharge'] = a
                     print("Arcane Charge created")
     
     
     @abstractmethod
     def cast(self):
         pass
-    def missiles(self):
-        if random.randint(0,100)<40:
+    def applyMissiles(self):
+        if random.randint(0,100)<30 and self._spellType==SpellType.dps and self._name!="Arcane Missiles":
             charNeonpewpew.castSpellList['AMissiles'].increaseStacks()
     def addToTotalCastTime(self):
-        if self._castTime == 0:
+        if self._castTime < charNeonpewpew.GCDCalc():
             totalCastTime+=charNeonpewpew.GCDCalc()
         else:
             totalCastTime+=self._castTime

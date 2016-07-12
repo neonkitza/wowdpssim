@@ -4,7 +4,6 @@ Created on Jun 27, 2016
 @author: Neonkitza
 '''
 
-s
 from spells.SpellType import SpellType
 
 

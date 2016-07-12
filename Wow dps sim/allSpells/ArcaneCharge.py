@@ -6,6 +6,7 @@ Created on Jul 1, 2016
 from spells.Spell import Spell
 from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
+from characters.Neonpewpew import *
 
 class ArcaneCharge(Spell):
     global charNeonpewpew
@@ -19,7 +20,7 @@ class ArcaneCharge(Spell):
         spellType = SpellType.buff
         channelTime = 0
         modifiers = None
-        stacks = 1
+        ArcaneCharge.stacks = 1
         listAffectedSpells = ['Arcane Blast', 'Arcane Missiles', 'Arcane Explosion', 'Arcane Barrage','Evocation']
     
         Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,False)
@@ -30,8 +31,9 @@ class ArcaneCharge(Spell):
         d = d+d*charNeonpewpew.masteryP*charNeonpewpew._mana/charNeonpewpew._maxMana
         return d
     def applyStack(self):
-        if stacks<4:
-            stacks+=1
-        duration = 15
+        if ArcaneCharge.stacks<4:
+            ArcaneCharge.stacks+=1
+        #duration = 15
     
-        
+    def removeStacks(self):
+        stacks = 0

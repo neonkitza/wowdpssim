@@ -6,6 +6,8 @@ Created on Jul 1, 2016
 from spells.Spell import Spell
 from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
+from characters.Neonpewpew import *
+from allSpells import ArcaneCharge
 
 class ArcaneMissiles(Spell):
     global charNeonpewpew
@@ -28,6 +30,9 @@ class ArcaneMissiles(Spell):
     def getDmg(self):
         d =  5*charNeonpewpew.spellPower*0.285
         d = d+d*charNeonpewpew.masteryP*charNeonpewpew._mana/charNeonpewpew._maxMana
+        if ArcaneCharge in charNeonpewpew.buffList.values():
+            chargeMulti = charNeonpewpew.buffList['ACharge'].stacks
+            d=d+d*chargeMulti*0.5
         return d
     def increaseStacks(self):
         if self.stacks<3:
@@ -36,7 +41,11 @@ class ArcaneMissiles(Spell):
         if self.stacks == 0:
             pass
         else:
-            charNeonpewpew._mana-=self._manaCost*(1+charNeonpewpew.buffList['ACharge'].stacks)
+            if ArcaneCharge in charNeonpewpew.buffList.values():
+                charNeonpewpew._mana-=self._manaCost*(1+charNeonpewpew.buffList['ACharge'].stacks)
+            else:
+                charNeonpewpew._mana-=self._manaCost
+                
             totalDMG+=self.getDmg()
         
             self.addToTotalCastTime()

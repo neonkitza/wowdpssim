@@ -10,9 +10,10 @@ import threading
 import time
 
 global charNeonpewpew
-charNeonpewpew.spellList.append(a)
+
 
 a = ArcaneBlast()
+charNeonpewpew.spellList.append(a)
 am = ArcaneMissiles()
 b = a.getDmg()
 print(a.getDmg())
