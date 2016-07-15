@@ -3,20 +3,17 @@ Created on Jun 27, 2016
 
 @author: Neonkitza
 '''
-from characters.Neonpewpew import Neonpewpew, charNeonpewpew
-from allSpells.ArcaneBlast import ArcaneBlast
-from allSpells.ArcaneMissiles import ArcaneMissiles
-import threading
-import time
+from simulation.Population import Population
+from simulation.Algorithm import Algorithm
 
-global charNeonpewpew
-
-
-a = ArcaneBlast()
-charNeonpewpew.spellList.append(a)
-am = ArcaneMissiles()
-b = a.getDmg()
-print(a.getDmg())
-print(am.getDmg())
+generationCount = 0
+elapsedTime = 0
+END_TIME = 60
 
 
+prvaPopulacija = Population(10,True)
+while generationCount < 10:
+    generationCount+=1
+    print("Generacija: "+generationCount+ " - Najbolji dmg: "+prvaPopulacija.getFittest().getTotalDmgDone())
+    prvaPopulacija = Algorithm.evolvePopulation(prvaPopulacija)
+    

@@ -23,4 +23,5 @@ class ArcanePower(Spell):
     
         Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True)
         
-    
+    def cast(self):
+        pass

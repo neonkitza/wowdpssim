@@ -4,31 +4,32 @@ Created on Jul 1, 2016
 @author: Neonkitza
 '''
 from spells.Spell import Spell
-from characters.Neonpewpew import charNeonpewpew,totalDMG,totalCastTime
 from spells.SpellType import SpellType
 from allSpells.ArcaneCharge import ArcaneCharge
+#from simulation.Individual import Individual
 
 class ArcaneBlast(Spell):
-    global charNeonpewpew,totalDMG,totalCastTime
+  #  global charNeonpewpew,totalDMG,totalCastTime
     
-    def __init__(self):
+    def __init__(self,char):
         name = 'Arcane Blast'
         cooldown = 0
-        manaCost = 0.02*charNeonpewpew._mana
+        manaCost = 0.02*char._maxMana
+        #*indi.charNeonpewpew._mana
         castTime = 2.25
         duration = 0
         spellType = SpellType.dps
         channelTime = 0
         modifiers = None
         listAffectedSpells = ['Arcane Charge']
-    
-        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True)
+        
+        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True,char)
         
     def getDmg(self):
-        d = charNeonpewpew.spellPower*1.21
-        d = d+d*charNeonpewpew.masteryP*charNeonpewpew._mana/charNeonpewpew._maxMana
-        if ArcaneCharge in charNeonpewpew.buffList.values():
-            chargeMulti = charNeonpewpew.buffList['ACharge'].stacks
+        d = self.charNeonpewpew.spellPower*1.21
+        d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
+        if ArcaneCharge in self.charNeonpewpew.buffList.values():
+            chargeMulti = self.charNeonpewpew.buffList['ACharge'].stacks
             d=d+d*chargeMulti*0.5
         return d
     
@@ -43,10 +44,12 @@ class ArcaneBlast(Spell):
                     prio *= 4
     '''
     def cast(self):
-        charNeonpewpew._mana-=self._manaCost*(1+charNeonpewpew.buffList['ACharge'].stacks)
-        totalDMG+=self.getDmg()
+        self.damageDone=self.getDmg(self)
+        # totalDMG+=self.getDmg()
+        self.charNeonpewpew._mana-=self._manaCost*(1+self.charNeonpewpew.buffList['ACharge'].stacks)
         
-        self.addToTotalCastTime()
+        self.currentCD = self._cooldown
+        #   self.addToTotalCastTime()
         
-        self.applyCharge()
+        self.applyCharge(self)
         

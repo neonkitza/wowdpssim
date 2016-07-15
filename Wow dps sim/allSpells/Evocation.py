@@ -19,12 +19,13 @@ class Evocation(Spell):
         spellType = SpellType.CD
         channelTime = 0
         modifiers = None
-        listAffectedSpells = ['Arcane Charge']
+        listAffectedSpells = []
     
         Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True)
         
     def cast(self):
 #       currentMana = charNeonpewpew._mana/charNeonpewpew._maxMana
+        self.currentCD = self._cooldown
         i = 0
         charNeonpewpew._mana+=charNeonpewpew._maxMana*0.15
         while charNeonpewpew._mana<charNeonpewpew._maxMana and i<self._duration:
