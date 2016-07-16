@@ -14,6 +14,6 @@ END_TIME = 60
 prvaPopulacija = Population(10,True)
 while generationCount < 10:
     generationCount+=1
-    print("Generacija: "+generationCount+ " - Najbolji dmg: "+prvaPopulacija.getFittest().getTotalDmgDone())
-    prvaPopulacija = Algorithm.evolvePopulation(prvaPopulacija)
+    print("Generacija: "+str(generationCount)+ " - Najbolji dmg: "+str(prvaPopulacija.getFittest().getTotalDmgDone()))
+    prvaPopulacija = Algorithm.evolvePopulation(Algorithm,prvaPopulacija)
     

@@ -4,7 +4,7 @@ Created on Jul 1, 2016
 @author: Neonkitza
 '''
 from spells.Spell import Spell
-from characters.Neonpewpew import charNeonpewpew
+# from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
 from characters.Neonpewpew import *
 from allSpells import ArcaneCharge, ArcaneMissilesBuff

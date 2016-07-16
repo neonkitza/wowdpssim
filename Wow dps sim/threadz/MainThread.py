@@ -24,7 +24,7 @@ class MainThread (threading.Thread):
         self.threadID = threadID
         self.name = name
         self.counter = counter
-    def run(self):
+    def runIndi(self):
         while totalCastTime<endTime:
             self.counter+=1
             print(self.counter)

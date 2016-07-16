@@ -10,7 +10,7 @@ from allSpells.ArcanePower import ArcanePowerBuff
 #from simulation.Individual import Individual
 
 class ArcaneBlast(Spell):
-  #  global charNeonpewpew,totalDMG,totalCastTime
+#  global charNeonpewpew,totalDMG,totalCastTime
     
     def __init__(self,char):
         name = 'Arcane Blast'
@@ -35,7 +35,7 @@ class ArcaneBlast(Spell):
         return d
     
     def cast(self):
-        self.damageDone=self.getDmg(self)
+        self.damageDone=self.getDmg()
         # totalDMG+=self.getDmg()
         manaC = self._manaCost
         if ArcanePowerBuff in self.charNeonpewpew.buffList:

@@ -4,7 +4,8 @@ Created on Jul 11, 2016
 @author: Neonkitza
 '''
 from spells.Spell import Spell
-from characters.Neonpewpew import charNeonpewpew
+
+
 from spells.SpellType import SpellType
 
 class ArcanePower(Spell):

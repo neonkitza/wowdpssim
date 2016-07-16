@@ -3,7 +3,7 @@ Created on Jul 1, 2016
 
 @author: Neonkitza
 '''
-from spells.Spell import Spell
+from allSpells.allSpells import Spell
 from spells.SpellType import SpellType
 
 class ArcaneCharge(Spell):

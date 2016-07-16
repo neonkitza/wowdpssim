@@ -4,11 +4,13 @@ Created on Jun 27, 2016
 @author: Neonkitza
 '''
 from spells.SpellType import SpellType
-from characters.Neonpewpew import charNeonpewpew, totalCastTime
-from allSpells.ArcanePower import ArcanePowerBuff
+#from characters.Neonpewpew import charNeonpewpew, totalCastTime
+#from allSpells.ArcanePower import ArcanePowerBuff
 '''from characters.Neonpewpew import charNeonpewpew'''
 from abc import ABCMeta, abstractmethod
 from allSpells import *
+from allSpells.ArcaneCharge import ArcaneCharge
+from allSpells.ArcaneMissilesBuff import ArcaneMissilesBuff
 import random
 
 class Spell(object):
@@ -47,6 +49,11 @@ class Spell(object):
     def decreasePriority(self):
         self._priority-=1
         
+        
+    def __repr__(self):
+        return repr(self._priority)
+    
+    
     @abstractmethod
     def getDmg(self):
         pass
@@ -62,24 +69,24 @@ class Spell(object):
         if self._name == 'Arcane Blast' or self._name == 'Arcane Missiles':
             if ArcaneCharge in self.charNeonpewpew.buffList.values():
                 self.charNeonpewpew.buffList['Arcane Charge'].applyStack()
-                print("Arcane Charge stack applied "+str(self.charNeonpewpew.buffList['Arcane Charge'].stacks))
+#  print("Arcane Charge stack applied "+str(self.charNeonpewpew.buffList['Arcane Charge'].stacks))
             else:
                 a=ArcaneCharge(self.charNeonpewpew)
                 self.charNeonpewpew.buffList['Arcane Charge'] = a
-                print("Arcane Charge created")
+#  print("Arcane Charge created")
         elif self._name == 'Arcane Barrage':
             if ArcaneCharge in self.charNeonpewpew.buffList.values():
                 del self.charNeonpewpew.buffList['Arcane Charge']
-                print("Arcane Charge deleted")
+#   print("Arcane Charge deleted")
         elif self._name == 'Arcane Explosion':
             if random.randint(0,100) <= 30:
                 if ArcaneCharge in self.charNeonpewpew.buffList.values():
                     self.charNeonpewpew.buffList['Arcane Charge'].applyStack()
-                    print("Arcane Charge stack applied "+str(self.charNeonpewpew.buffList['Arcane Charge'].stacks))
+#      print("Arcane Charge stack applied "+str(self.charNeonpewpew.buffList['Arcane Charge'].stacks))
                 else:
                     a=ArcaneCharge(self.charNeonpewpew)
                     self.charNeonpewpew.buffList['Arcane Charge'] = a
-                    print("Arcane Charge created")
+                #    print("Arcane Charge created")
     
     
     @abstractmethod
@@ -113,6 +120,8 @@ class Spell(object):
     def decreaseCD(self):
         if self.currentCD>0:
             self.currentCD-=1
+        if self.currentCD <= 0:
+            self.currentCD = 0
             
     def dmgDone(self,dmg):
         if ArcanePowerBuff in self.charNeonpewpew.buffList:

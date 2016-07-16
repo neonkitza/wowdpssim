@@ -4,10 +4,10 @@ Created on Jul 1, 2016
 @author: Neonkitza
 '''
 from spells.Spell import Spell
-from characters.Neonpewpew import charNeonpewpew
+#from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
 from allSpells.ArcaneCharge import ArcaneCharge
-import random
+#import random
 from allSpells.ArcanePower import ArcanePowerBuff
 
 class ArcaneBarrage(Spell):
@@ -42,14 +42,14 @@ class ArcaneBarrage(Spell):
 #                 prio * 3
 
     def cast(self):
-        self.damageDone=self.getDmg(self)
+        self.damageDone=self.getDmg()
         self.currentCD = self._cooldown
         manaC = self._manaCost
         if ArcanePowerBuff in self.charNeonpewpew.buffList:
             manaC *= 0.9
         self.charNeonpewpew._mana-=manaC
        
-        if ArcaneCharge in charNeonpewpew.buffList:       
+        if ArcaneCharge in self.charNeonpewpew.buffList:       
             self.charNeonpewpew.buffList['Arcane Charge'].removeStacks()
             
             

@@ -3,7 +3,7 @@ Created on Jul 15, 2016
 
 @author: Neonkitza
 '''
-from characters.Neonpewpew import charNeonpewpew
+# from characters.Neonpewpew import charNeonpewpew
 from spells.Spell import Spell
 from spells.SpellType import SpellType
 from allSpells.ArcaneCharge import ArcaneCharge

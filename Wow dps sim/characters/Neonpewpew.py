@@ -4,9 +4,15 @@ Created on Jun 27, 2016
 @author: Neonkitza
 '''
 
-from spells.SpellType import SpellType
-from allSpells import *
-
+#from spells.SpellType import SpellType
+# from allSpells.ArcaneBarrage import ArcaneBarrage
+# from allSpells.ArcaneBlast import ArcaneBlast
+# #from allSpells.ArcaneCharge import ArcaneCharge
+# from allSpells.ArcaneExplosion import ArcaneExplosion
+# from allSpells.ArcaneMissiles import ArcaneMissiles
+# from allSpells.Evocation import Evocation
+#from allSpells.ArcanePower import ArcanePower
+from allSpells.allSpells import *
 
 class Neonpewpew:
     int = 4380
@@ -61,7 +67,10 @@ class Neonpewpew:
         self.castSpellList.append(Evocation(self))
         self.castSpellList.append(ArcanePower(self))
         
-        
+    def manaRegen(self):
+        self._mana+=2000
+        if self._mana>self._maxMana:
+            self._mana = self._maxMana
 # charNeonpewpew = Neonpewpew()
 # totalDMG = 0
 # endTime = 90

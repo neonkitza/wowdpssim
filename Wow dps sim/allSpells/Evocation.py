@@ -4,9 +4,9 @@ Created on Jul 11, 2016
 @author: Neonkitza
 '''
 from spells.Spell import Spell
-from characters.Neonpewpew import charNeonpewpew
+#from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
-from characters.Neonpewpew import charNeonpewpew, totalCastTime
+#from characters.Neonpewpew import charNeonpewpew, totalCastTime
 class Evocation(Spell):
 #   global charNeonpewpew
 

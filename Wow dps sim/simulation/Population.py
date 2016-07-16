@@ -5,6 +5,7 @@ Created on Jul 15, 2016
 '''
 # from characters.Neonpewpew import Neonpewpew
 from simulation.Individual import Individual
+import copy
 
 class Population(object):
     def __init__(self,popSize,init):
@@ -15,19 +16,22 @@ class Population(object):
                 novi = Individual()
                 novi.generateIndividual()
                 self.individuals.append(novi)
+#         else:
+#             for i in range(self.popSize):
+#                 self.individuals[i].run()
         
     
     def getFittest(self):
         fittest = self.individuals[0]
         i = 0
         for i in self.individuals:
-            if fittest < i.getTotalDmgDone():
+            if fittest.getTotalDmgDone() < i.getTotalDmgDone():
                 fittest = i;
         
         return fittest
     def saveIndividual(self,indi):
         for i in range(0,self.popSize):
-            self.individuals[1] = indi
+            self.individuals.append(copy.deepcopy(indi))
     
     def size(self):
         return len(self.individuals)

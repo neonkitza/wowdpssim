@@ -17,7 +17,8 @@ class Algorithm():
             elitismOffset = 1
         
         for i in range(elitismOffset,newPopulation.popSize):
-            self.mutate(newPopulation.individuals[i])
+            self.mutate(self,newPopulation.individuals[i])
+            newPopulation.individuals[i].runIndi()
         
         return newPopulation
         
@@ -30,5 +31,6 @@ class Algorithm():
                         spell.increasePriority()
                     else:
                         spell.decreasePriority()
+        #indi.runIndi()
             
     
