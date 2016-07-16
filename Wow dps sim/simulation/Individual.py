@@ -25,6 +25,11 @@ class Individual():
             self.fitness = FitnessCalc.getFitness(self)
         return self.fitness
     
+    def getTotalCastTime(self):
+        totalTime = 0
+        for event in self.eventList:
+            totalTime+=event.spell.castTime()
+        return totalTime
     
 class FitnessCalc(object):
     solution = Individual()

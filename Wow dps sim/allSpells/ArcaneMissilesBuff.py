@@ -5,9 +5,9 @@ Created on Jul 15, 2016
 '''
 from characters.Neonpewpew import charNeonpewpew
 class ArcaneMissilesBuff(Spell):
-    global charNeonpewpew
-    stacks = 0
-    def __init__(self):
+#     global charNeonpewpew
+#     stacks = 0
+    def __init__(self,char):
         name = 'Arcane Missiles buff'
         cooldown = 0
         manaCost = 0
@@ -18,8 +18,8 @@ class ArcaneMissilesBuff(Spell):
         modifiers = None
         ArcaneCharge.stacks = 1
         listAffectedSpells = ['Arcane Missiles']
-        
-        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,False)
+        self.stacks = 1
+        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,False,char)
         
            
     def getDmg(self):
@@ -30,9 +30,10 @@ class ArcaneMissilesBuff(Spell):
         #duration = 15
     
     def removeStacks(self):
-        stacks = 0
+        self.stacks = 0
+        del charNeonpewpew.buffList['AMissilesBuff']
     def removeStack(self):
-        stacks-=1
-        if stacks==0:
-            del charNeonpewpew.buffList['AMissilesBuff']
+        self.stacks-=1
+        if self.stacks==0:
+            self.removeStacks()
         

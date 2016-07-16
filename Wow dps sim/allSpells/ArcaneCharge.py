@@ -4,14 +4,11 @@ Created on Jul 1, 2016
 @author: Neonkitza
 '''
 from spells.Spell import Spell
-from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
-from characters.Neonpewpew import *
 
 class ArcaneCharge(Spell):
-    global charNeonpewpew
-    stacks = 0
-    def __init__(self):
+  
+    def __init__(self,char):
         name = 'Arcane Charge'
         cooldown = 0
         manaCost = 0
@@ -20,20 +17,21 @@ class ArcaneCharge(Spell):
         spellType = SpellType.buff
         channelTime = 0
         modifiers = None
-        ArcaneCharge.stacks = 1
+        self.stacks = 1
         listAffectedSpells = ['Arcane Blast', 'Arcane Missiles', 'Arcane Explosion', 'Arcane Barrage','Evocation']
     
-        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,False)
+        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,False,char)
         
            
     def getDmg(self):
-        d =  5*charNeonpewpew.spellPower*0.747
-        d = d+d*charNeonpewpew.masteryP*charNeonpewpew._mana/charNeonpewpew._maxMana
+        d =  5*self.charNeonpewpew.spellPower*0.747
+        d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
         return d
     def applyStack(self):
-        if ArcaneCharge.stacks<4:
-            ArcaneCharge.stacks+=1
+        if self.stacks<4:
+            self.stacks+=1
         #duration = 15
     
     def removeStacks(self):
-        stacks = 0
+        self.stacks = 0
+        del self.charNeonpewpew.buffList['ACharge']

@@ -12,10 +12,10 @@ import random
 class ArcaneBarrage(Spell):
     global charNeonpewpew
      
-    def __init__(self):
+    def __init__(self,char):
         name = 'Arcane Barrage'
         cooldown = 3
-        manaCost = 0.005*charNeonpewpew._mana
+        manaCost = 0.005*char._maxMana
         castTime = 0
         duration = 0
         spellType = SpellType.dps
@@ -23,14 +23,14 @@ class ArcaneBarrage(Spell):
         modifiers = None
         listAffectedSpells = ['Arcane Charge']
     
-        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True)
+        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True,char)
         
            
     def getDmg(self):
-        d =  5*charNeonpewpew.spellPower*0.747
-        d = d+d*charNeonpewpew.masteryP*charNeonpewpew._mana/charNeonpewpew._maxMana
-        if ArcaneCharge in charNeonpewpew.buffList.values():
-            chargeMulti = charNeonpewpew.buffList['ACharge'].stacks
+        d =  5*self.charNeonpewpew.spellPower*0.747
+        d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
+        if ArcaneCharge in self.charNeonpewpew.buffList.values():
+            chargeMulti = self.charNeonpewpew.buffList['ACharge'].stacks
             d=d+d*chargeMulti*0.5
         return d
     
@@ -41,6 +41,6 @@ class ArcaneBarrage(Spell):
 #                 prio * 3
 
     def cast(self):
+        self.damageDone=self.getDmg(self)
         if ArcaneCharge in charNeonpewpew.buffList.values():       
-            charNeonpewpew.buffList['ACharge'].removeStacks() = 0
-            del charNeonpewpew.buffList['ACharge']
+            self.charNeonpewpew.buffList['ACharge'].removeStacks()

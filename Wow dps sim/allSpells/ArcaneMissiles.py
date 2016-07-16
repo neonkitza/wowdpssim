@@ -40,7 +40,11 @@ class ArcaneMissiles(Spell):
     def cast(self):
         if ArcaneMissilesBuff in self.charNeonpewpew.buffList.values():
             if self.charNeonpewpew.buffList['AMissilesBuff'].stacks>0:
+                
                 self.charNeonpewpew.buffList['AMissilesBuff'].removeStack()
+                
+                self.damageDone=self.getDmg(self)
+                
                 if ArcaneCharge in self.charNeonpewpew.buffList.values():
                     self.charNeonpewpew._mana-=self._manaCost*(1+self.charNeonpewpew.buffList['ACharge'].stacks)
                 else:

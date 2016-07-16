@@ -63,7 +63,7 @@ class Spell(object):
                 self.charNeonpewpew.buffList['ACharge'].applyStack()
                 print("Arcane Charge stack applied "+str(self.charNeonpewpew.buffList['ACharge'].stacks))
             else:
-                a=ArcaneCharge()
+                a=ArcaneCharge(self.charNeonpewpew)
                 self.charNeonpewpew.buffList['ACharge'] = a
                 print("Arcane Charge created")
         elif self._name == 'Arcane Barrage':
@@ -76,7 +76,7 @@ class Spell(object):
                     self.charNeonpewpew.buffList['ACharge'].applyStack()
                     print("Arcane Charge stack applied "+str(self.charNeonpewpew.buffList['ACharge'].stacks))
                 else:
-                    a=ArcaneCharge()
+                    a=ArcaneCharge(self.charNeonpewpew)
                     self.charNeonpewpew.buffList['ACharge'] = a
                     print("Arcane Charge created")
     
@@ -89,14 +89,18 @@ class Spell(object):
             if ArcaneMissilesBuff in self.charNeonpewpew.buffList.values():
                 self.charNeonpewpew.buffList['AMissilesBuff'].applyStack()
             else:
-                amb = ArcaneMissilesBuff()
+                amb = ArcaneMissilesBuff(self.charNeonpewpew)
                 self.charNeonpewpew.buffList['AMissilesBuff'] = amb
     def addToTotalCastTime(self,indi):
         if self._castTime < self.charNeonpewpew.GCDCalc():
             indi.totalCastTime+=self.charNeonpewpew.GCDCalc()
         else:
             indi.stotalCastTime+=self._castTime
-    
+    def castTime(self):
+        if self.getCastTime()<self.charNeonpewpew.GCDCalc():
+            return self.charNeonpewpew.GCDCalc()
+        else:
+            return self.getCastTime()
     def decreaseCD(self):
         if self.currentCD>0:
             self.currentCD-=1

@@ -8,12 +8,12 @@ from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
 
 class ArcaneExplosion(Spell):
-    global charNeonpewpew
+#    global charNeonpewpew
      
-    def __init__(self):
+    def __init__(self,char):
         name = 'Arcane Explosion'
         cooldown = 0
-        manaCost = 0.03*charNeonpewpew._mana
+        manaCost = 0.03*char._maxMana
         castTime = 0
         duration = 0
         spellType = SpellType.dps
@@ -21,9 +21,17 @@ class ArcaneExplosion(Spell):
         modifiers = None
         listAffectedSpells = ['Arcane Charge']
     
-        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True)
+        Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True,char)
         
     def getDmg(self):
-        d =  5*charNeonpewpew.spellPower*0.545
-        d = d+d*charNeonpewpew.masteryP*charNeonpewpew._mana/charNeonpewpew._maxMana
+        d =  5*self.charNeonpewpew.spellPower*0.545
+        d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
         return d
+    def cast(self):
+        self.damageDone=self.getDmg(self)
+        self.charNeonpewpew._mana-=self._manaCost     
+        self.currentCD = self._cooldown
+        #   self.addToTotalCastTime()
+        
+        self.applyCharge(self)
+        
