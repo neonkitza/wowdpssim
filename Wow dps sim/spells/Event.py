@@ -4,7 +4,7 @@ Created on Jul 2, 2016
 @author: Neonkitza
 '''
 from spells.Spell import Spell
-from characters import Neonpewpew
+from characters.Neonpewpew import Neonpewpew
 class Event(object):
     def __init__(self,spell,char):
         self.spell = spell

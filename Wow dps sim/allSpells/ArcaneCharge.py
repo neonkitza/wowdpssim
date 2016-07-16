@@ -28,10 +28,11 @@ class ArcaneCharge(Spell):
         d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
         return d
     def applyStack(self):
+        self._durationRemaining = self._duration
         if self.stacks<4:
             self.stacks+=1
         #duration = 15
     
     def removeStacks(self):
         self.stacks = 0
-        del self.charNeonpewpew.buffList['ACharge']
+        del self.charNeonpewpew.buffList['Arcane Charge']

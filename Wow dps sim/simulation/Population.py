@@ -15,6 +15,7 @@ class Population(object):
                 novi = Individual()
                 novi.generateIndividual()
                 self.individuals.append(novi)
+        
     
     def getFittest(self):
         fittest = self.individuals[0]
@@ -25,7 +26,8 @@ class Population(object):
         
         return fittest
     def saveIndividual(self,indi):
-        self.individuals[0] = indi
+        for i in range(0,self.popSize):
+            self.individuals[1] = indi
     
     def size(self):
         return len(self.individuals)

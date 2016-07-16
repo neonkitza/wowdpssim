@@ -8,6 +8,7 @@ from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
 from allSpells.ArcaneCharge import ArcaneCharge
 import random
+from allSpells.ArcanePower import ArcanePowerBuff
 
 class ArcaneBarrage(Spell):
     global charNeonpewpew
@@ -30,17 +31,27 @@ class ArcaneBarrage(Spell):
         d =  5*self.charNeonpewpew.spellPower*0.747
         d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
         if ArcaneCharge in self.charNeonpewpew.buffList.values():
-            chargeMulti = self.charNeonpewpew.buffList['ACharge'].stacks
+            chargeMulti = self.charNeonpewpew.buffList['Arcane Charge'].stacks
             d=d+d*chargeMulti*0.5
         return d
     
 #     def priority(self):
 #         prio = self.getDmg()/super(ArcaneBarrage, self).getCastTime()/1000
 #         if ArcaneCharge in charNeonpewpew.buffList.values():
-#             if charNeonpewpew.buffList['ACharge'].stacks < 4:
+#             if charNeonpewpew.buffList['Arcane Charge'].stacks < 4:
 #                 prio * 3
 
     def cast(self):
         self.damageDone=self.getDmg(self)
-        if ArcaneCharge in charNeonpewpew.buffList.values():       
-            self.charNeonpewpew.buffList['ACharge'].removeStacks()
+        self.currentCD = self._cooldown
+        manaC = self._manaCost
+        if ArcanePowerBuff in self.charNeonpewpew.buffList:
+            manaC *= 0.9
+        self.charNeonpewpew._mana-=manaC
+       
+        if ArcaneCharge in charNeonpewpew.buffList:       
+            self.charNeonpewpew.buffList['Arcane Charge'].removeStacks()
+            
+            
+            
+    

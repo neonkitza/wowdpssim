@@ -4,9 +4,11 @@ Created on Jul 15, 2016
 @author: Neonkitza
 '''
 from characters.Neonpewpew import charNeonpewpew
+from spells.Spell import Spell
+from spells.SpellType import SpellType
+from allSpells.ArcaneCharge import ArcaneCharge
 class ArcaneMissilesBuff(Spell):
-#     global charNeonpewpew
-#     stacks = 0
+
     def __init__(self,char):
         name = 'Arcane Missiles buff'
         cooldown = 0
@@ -25,13 +27,14 @@ class ArcaneMissilesBuff(Spell):
     def getDmg(self):
         pass
     def applyStack(self):
+        self._durationRemaining = self._durationRemaining
         if ArcaneMissilesBuff.stacks<3:
             ArcaneMissilesBuff.stacks+=1
         #duration = 15
     
     def removeStacks(self):
         self.stacks = 0
-        del charNeonpewpew.buffList['AMissilesBuff']
+        del self.charNeonpewpew.buffList['Arcane Missiles buff']
     def removeStack(self):
         self.stacks-=1
         if self.stacks==0:

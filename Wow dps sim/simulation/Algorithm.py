@@ -12,7 +12,7 @@ class Algorithm():
     def evolvePopulation(self,oldPop):
         newPopulation = Population(oldPop.popSize,False)
         elitismOffset = 0
-        if elitism:
+        if Algorithm.elitism:
             newPopulation.saveIndividual(oldPop.getFittest())
             elitismOffset = 1
         
@@ -23,7 +23,7 @@ class Algorithm():
         
     
     def mutate(self,indi):
-        for spell in indi.charNeonpewpew.castSpellList.values():
+        for spell in indi.charNeonpewpew.castSpellList:
                 if random.randint(0,100)< Algorithm.mutationRate:
                     sta = bool(random.getrandbits(1))
                     if sta:

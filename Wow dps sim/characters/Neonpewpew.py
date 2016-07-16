@@ -62,9 +62,9 @@ class Neonpewpew:
         self.castSpellList.append(ArcanePower(self))
         
         
-charNeonpewpew = Neonpewpew()
-totalDMG = 0
-endTime = 90
-totalCastTime = 0
+# charNeonpewpew = Neonpewpew()
+# totalDMG = 0
+# endTime = 90
+# totalCastTime = 0
 
         

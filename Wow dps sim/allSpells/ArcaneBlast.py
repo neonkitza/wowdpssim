@@ -6,6 +6,7 @@ Created on Jul 1, 2016
 from spells.Spell import Spell
 from spells.SpellType import SpellType
 from allSpells.ArcaneCharge import ArcaneCharge
+from allSpells.ArcanePower import ArcanePowerBuff
 #from simulation.Individual import Individual
 
 class ArcaneBlast(Spell):
@@ -29,24 +30,22 @@ class ArcaneBlast(Spell):
         d = self.charNeonpewpew.spellPower*1.21
         d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
         if ArcaneCharge in self.charNeonpewpew.buffList.values():
-            chargeMulti = self.charNeonpewpew.buffList['ACharge'].stacks
+            chargeMulti = self.charNeonpewpew.buffList['Arcane Charge'].stacks
             d=d+d*chargeMulti*0.5
         return d
     
-        '''  def priority(self):
-        prio = (self.getDmg()/self.getCastTime())/self._manaCost*(1+charNeonpewpew.buffList['ACharge'].stacks)
-        #if ArcaneCharge in charNeonpewpew.buffList.values():
-        if charNeonpewpew.buffList['ACharge'].stacks < 4:
-            if charNeonpewpew.phase == "burst":
-                prio*6
-            elif charNeonpewpew.phase == "conserve":
-                if charNeonpewpew._mana/charNeonpewpew._maxMana < 0.93:
-                    prio *= 4
-    '''
     def cast(self):
         self.damageDone=self.getDmg(self)
         # totalDMG+=self.getDmg()
-        self.charNeonpewpew._mana-=self._manaCost*(1+self.charNeonpewpew.buffList['ACharge'].stacks)
+        manaC = self._manaCost
+        if ArcanePowerBuff in self.charNeonpewpew.buffList:
+            manaC *= 0.9
+        if ArcaneCharge in self.charNeonpewpew.buffList:
+            self.charNeonpewpew._mana-=manaC*(1+self.charNeonpewpew.buffList['Arcane Charge'].stacks)
+        else:
+            self.charNeonpewpew._mana-=manaC
+            
+        
         
         self.currentCD = self._cooldown
         #   self.addToTotalCastTime()

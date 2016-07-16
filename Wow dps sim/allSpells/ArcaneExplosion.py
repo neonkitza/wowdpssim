@@ -6,6 +6,7 @@ Created on Jul 1, 2016
 from spells.Spell import Spell
 from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
+from allSpells.ArcanePower import ArcanePowerBuff
 
 class ArcaneExplosion(Spell):
 #    global charNeonpewpew
@@ -29,7 +30,11 @@ class ArcaneExplosion(Spell):
         return d
     def cast(self):
         self.damageDone=self.getDmg(self)
-        self.charNeonpewpew._mana-=self._manaCost     
+        manaC = self._manaCost
+        if ArcanePowerBuff in self.charNeonpewpew.buffList:
+            manaC *= 0.9
+       
+        self.charNeonpewpew._mana-=manaC     
         self.currentCD = self._cooldown
         #   self.addToTotalCastTime()
         

@@ -8,9 +8,9 @@ from characters.Neonpewpew import charNeonpewpew
 from spells.SpellType import SpellType
 from characters.Neonpewpew import *
 from allSpells import ArcaneCharge, ArcaneMissilesBuff
+from allSpells.ArcanePower import ArcanePowerBuff
 
 class ArcaneMissiles(Spell):
-    global charNeonpewpew
     
     def __init__(self,char):
         name = 'Arcane Missiles'
@@ -21,7 +21,7 @@ class ArcaneMissiles(Spell):
         spellType = SpellType.dps
         channelTime = 2
         modifiers = None
-        listAffectedSpells = ['Arcane Missiles']
+        listAffectedSpells = ['Arcane Missiles Buff']
     
         Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True,char)
         
@@ -31,24 +31,27 @@ class ArcaneMissiles(Spell):
         d =  5*self.charNeonpewpew.spellPower*0.285
         d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
         if ArcaneCharge in self.charNeonpewpew.buffList.values():
-            chargeMulti = self.charNeonpewpew.buffList['ACharge'].stacks
+            chargeMulti = self.charNeonpewpew.buffList['Arcane Charge'].stacks
             d=d+d*chargeMulti*0.5
         return d
-    def increaseStacks(self):
-        if self.stacks<3:
-            self.stacks+=1
+#     def increaseStacks(self):
+#         if self.stacks<3:
+#             self.stacks+=1
     def cast(self):
+        manaC = self._manaCost
+        if ArcanePowerBuff in self.charNeonpewpew.buffList:
+            manaC *= 0.9
         if ArcaneMissilesBuff in self.charNeonpewpew.buffList.values():
-            if self.charNeonpewpew.buffList['AMissilesBuff'].stacks>0:
+            if self.charNeonpewpew.buffList['Arcane Missiles buff'].stacks>0:
                 
-                self.charNeonpewpew.buffList['AMissilesBuff'].removeStack()
+                self.charNeonpewpew.buffList['Arcane Missiles buff'].removeStack()
                 
-                self.damageDone=self.getDmg(self)
+                self.damageDone=self.getDmg()
                 
                 if ArcaneCharge in self.charNeonpewpew.buffList.values():
-                    self.charNeonpewpew._mana-=self._manaCost*(1+self.charNeonpewpew.buffList['ACharge'].stacks)
+                    self.charNeonpewpew._mana-=manaC*(1+self.charNeonpewpew.buffList['Arcane Charge'].stacks)
                 else:
-                    self.charNeonpewpew._mana-=self._manaCost
+                    self.charNeonpewpew._mana-=manaC
                 
                 self.damageDone=self.getDmg(self)
                 
