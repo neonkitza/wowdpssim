@@ -1,14 +1,9 @@
-'''
-Created on Jul 2, 2016
 
-@author: Neonkitza
-'''
-from allSpells.allSpells import Spell
-from characters.Neonpewpew import Neonpewpew
 import copy
 class Event(object):
     def __init__(self,spell,char):
-        self.spell = spell
+        self.spell = copy.deepcopy(spell)
         self.buffList = copy.deepcopy(char.buffList)
-        self.currentMana = char._mana
+        self.currentMana = copy.deepcopy(char._mana)
+        self.dmgDone = self.spell.damageDone
     

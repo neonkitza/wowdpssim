@@ -1,8 +1,4 @@
-'''
-Created on Jul 16, 2016
 
-@author: Neonkitza
-'''
 import random
 from abc import ABCMeta, abstractmethod
 from spells.SpellType import SpellType
@@ -32,20 +28,33 @@ class Spell(object):
         self.currentCD = 0
         self.damageDone = 0
         self.charNeonpewpew = char
+        self.kolikoBitan = 0
     def getPriority(self):
         return self._priority
     def setPriority(self,pro):
         self._priority = pro
         
     def increasePriority(self):
-        self._priority+=1
+        if self._priority <10:
+            self._priority+=1
     def decreasePriority(self):
-        self._priority-=1
+        if self._priority>0:
+            self._priority-=1
         
         
     def __repr__(self):
         return repr(self._priority)
     
+    def applyCast(self):
+        castable = True
+        if self.charNeonpewpew._mana <= 0:
+            castable = False
+        if self._name == "Arcane Missiles" and "Arcane Missiles buff" not in self.charNeonpewpew.buffList.keys(): 
+                castable = False
+        if self.currentCD != 0:
+            castable = False
+        return castable
+        
     
     @abstractmethod
     def getDmg(self):
@@ -56,30 +65,28 @@ class Spell(object):
     @abstractmethod
     def getDPS(self):
         pass
-    def applyCharge(self,indi):
+    def applyCharge(self):
         '''if 
             if random.randint(0,100) <= 30:'''
+        staIma = []
+        for buff in self.charNeonpewpew.buffList.values():
+            staIma.append(buff._name)
         if self._name == 'Arcane Blast' or self._name == 'Arcane Missiles':
-            if ArcaneCharge in self.charNeonpewpew.buffList.values():
+            if 'Arcane Charge' in staIma:
                 self.charNeonpewpew.buffList['Arcane Charge'].applyStack()
-#                print("Arcane Charge stack applied "+str(self.charNeonpewpew.buffList['Arcane Charge'].stacks))
             else:
                 a=ArcaneCharge(self.charNeonpewpew)
                 self.charNeonpewpew.buffList['Arcane Charge'] = a
-#                print("Arcane Charge created")
         elif self._name == 'Arcane Barrage':
-            if ArcaneCharge in self.charNeonpewpew.buffList.values():
+            if 'Arcane Charge' in staIma:
                 del self.charNeonpewpew.buffList['Arcane Charge']
-#                print("Arcane Charge deleted")
         elif self._name == 'Arcane Explosion':
             if random.randint(0,100) <= 30:
-                if ArcaneCharge in self.charNeonpewpew.buffList.values():
+                if 'Arcane Charge' in staIma:
                     self.charNeonpewpew.buffList['Arcane Charge'].applyStack()
-#                    print("Arcane Charge stack applied "+str(self.charNeonpewpew.buffList['Arcane Charge'].stacks))
                 else:
                     a=ArcaneCharge(self.charNeonpewpew)
                     self.charNeonpewpew.buffList['Arcane Charge'] = a
-#                    print("Arcane Charge created")
     
     
     @abstractmethod
@@ -88,18 +95,18 @@ class Spell(object):
     def decreaseDuration(self):
         if self._durationRemaining>0:
             self._durationRemaining-=1
-#         if self._durationRemaining==0:
-#             del self.charNeonpewpew.buffList[self._name]
     def resetDuration(self):
         self._durationRemaining = self._duration
     def applyMissiles(self):
         if random.randint(0,100)<30 and self._spellType==SpellType.dps and self._name!="Arcane Missiles":
-            if ArcaneMissilesBuff in self.charNeonpewpew.buffList:
+            if 'Arcane Missiles buff' in self.charNeonpewpew.buffList.keys():
                 self.charNeonpewpew.buffList['Arcane Missiles buff'].applyStack()
                 self.charNeonpewpew.buffList['Arcane Missiles buff'].resetDuration()
             else:
                 amb = ArcaneMissilesBuff(self.charNeonpewpew)
                 self.charNeonpewpew.buffList['Arcane Missiles buff'] = amb
+#         if 'Arcane Missiles buff' in self.charNeonpewpew.buffList.keys():
+#             print("applyMissiles stacks ="+str(self.charNeonpewpew.buffList['Arcane Missiles buff'].stacks))
     def addToTotalCastTime(self,indi):
         if self._castTime < self.charNeonpewpew.GCDCalc():
             indi.totalCastTime+=self.charNeonpewpew.GCDCalc()
@@ -117,7 +124,7 @@ class Spell(object):
             self.currentCD = 0
             
     def dmgDone(self,dmg):
-        if ArcanePowerBuff in self.charNeonpewpew.buffList:
+        if "Arcane Power buff" in self.charNeonpewpew.buffList.keys():
             self.damageDone*=1.2
         self.damageDone = dmg
         
@@ -141,7 +148,7 @@ class ArcaneBlast(Spell):
     def getDmg(self):
         d = self.charNeonpewpew.spellPower*1.21
         d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
-        if ArcaneCharge in self.charNeonpewpew.buffList.values():
+        if 'Arcane Charge' in self.charNeonpewpew.buffList.keys():
             chargeMulti = self.charNeonpewpew.buffList['Arcane Charge'].stacks
             d=d+d*chargeMulti*0.5
         return d
@@ -150,9 +157,9 @@ class ArcaneBlast(Spell):
         self.damageDone=self.getDmg()
         # totalDMG+=self.getDmg()
         manaC = self._manaCost
-        if ArcanePowerBuff in self.charNeonpewpew.buffList:
+        if 'Arcane Power buff' in self.charNeonpewpew.buffList.keys():
             manaC *= 0.9
-        if ArcaneCharge in self.charNeonpewpew.buffList:
+        if 'Arcane Charge' in self.charNeonpewpew.buffList.keys():
             self.charNeonpewpew._mana-=manaC*(1+self.charNeonpewpew.buffList['Arcane Charge'].stacks)
         else:
             self.charNeonpewpew._mana-=manaC
@@ -161,8 +168,8 @@ class ArcaneBlast(Spell):
         
         self.currentCD = self._cooldown
         #   self.addToTotalCastTime()
-        
-        self.applyCharge(self)
+        self.applyMissiles()
+        self.applyCharge()
         
 class ArcaneBarrage(Spell):
     global charNeonpewpew
@@ -184,26 +191,22 @@ class ArcaneBarrage(Spell):
     def getDmg(self):
         d =  5*self.charNeonpewpew.spellPower*0.747
         d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
-        if ArcaneCharge in self.charNeonpewpew.buffList.values():
+        if 'Arcane Charge' in self.charNeonpewpew.buffList.keys():
             chargeMulti = self.charNeonpewpew.buffList['Arcane Charge'].stacks
             d=d+d*chargeMulti*0.5
         return d
     
-#     def priority(self):
-#         prio = self.getDmg()/super(ArcaneBarrage, self).getCastTime()/1000
-#         if ArcaneCharge in charNeonpewpew.buffList.values():
-#             if charNeonpewpew.buffList['Arcane Charge'].stacks < 4:
-#                 prio * 3
 
     def cast(self):
+        
         self.damageDone=self.getDmg()
         self.currentCD = self._cooldown
         manaC = self._manaCost
-        if ArcanePowerBuff in self.charNeonpewpew.buffList:
+        if 'Arcane Power buff' in self.charNeonpewpew.buffList.keys():
             manaC *= 0.9
         self.charNeonpewpew._mana-=manaC
-       
-        if ArcaneCharge in self.charNeonpewpew.buffList:       
+        self.applyMissiles()
+        if 'Arcane Charge' in self.charNeonpewpew.buffList.keys():       
             self.charNeonpewpew.buffList['Arcane Charge'].removeStacks()
     
 class ArcaneMissiles(Spell):
@@ -226,40 +229,29 @@ class ArcaneMissiles(Spell):
     def getDmg(self):
         d =  5*self.charNeonpewpew.spellPower*0.285
         d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
-        if ArcaneCharge in self.charNeonpewpew.buffList.values():
+        if 'Arcane Charge' in self.charNeonpewpew.buffList.keys():
             chargeMulti = self.charNeonpewpew.buffList['Arcane Charge'].stacks
             d=d+d*chargeMulti*0.5
         return d
-#     def increaseStacks(self):
-#         if self.stacks<3:
-#             self.stacks+=1
     def cast(self):
         manaC = self._manaCost
-        if ArcanePowerBuff in self.charNeonpewpew.buffList:
+        if 'Arcane Power buff' in self.charNeonpewpew.buffList.keys():
             manaC *= 0.9
-        if ArcaneMissilesBuff in self.charNeonpewpew.buffList.values():
-            if self.charNeonpewpew.buffList['Arcane Missiles buff'].stacks>0:
-                
-                self.charNeonpewpew.buffList['Arcane Missiles buff'].removeStack()
-                
-                self.damageDone=self.getDmg()
-                
-                if ArcaneCharge in self.charNeonpewpew.buffList.values():
-                    self.charNeonpewpew._mana-=manaC*(1+self.charNeonpewpew.buffList['Arcane Charge'].stacks)
-                else:
-                    self.charNeonpewpew._mana-=manaC
-                
-                self.damageDone=self.getDmg(self)
-                
-                self.currentCD = self._cooldown
-                
-                self.applyCharge()
-#          self.addToTotalCastTime()
-            else:
-                pass
-            #treba valjda addtotalcasttime
+        self.charNeonpewpew.buffList['Arcane Missiles buff'].removeStack()
+        
+        self.damageDone=self.getDmg()
+        
+        if 'Arcane Charge' in self.charNeonpewpew.buffList.keys():
+            self.charNeonpewpew._mana-=manaC*(1+self.charNeonpewpew.buffList['Arcane Charge'].stacks)
         else:
-            pass
+            self.charNeonpewpew._mana-=manaC
+        
+        self.damageDone=self.getDmg()
+        
+        self.currentCD = self._cooldown
+        
+        self.applyCharge()
+
             
 class ArcaneExplosion(Spell):
 #    global charNeonpewpew
@@ -282,15 +274,15 @@ class ArcaneExplosion(Spell):
         d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
         return d
     def cast(self):
-        self.damageDone=self.getDmg(self)
+        self.damageDone=self.getDmg()
         manaC = self._manaCost
-        if ArcanePowerBuff in self.charNeonpewpew.buffList:
+        if 'Arcane Power buff' in self.charNeonpewpew.buffList.keys():
             manaC *= 0.9
        
         self.charNeonpewpew._mana-=manaC     
         self.currentCD = self._cooldown
         #   self.addToTotalCastTime()
-        
+        self.applyMissiles()
         self.applyCharge(self)
         
 class ArcanePower(Spell):
@@ -308,7 +300,9 @@ class ArcanePower(Spell):
     
         Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True,char)
         
+        self.kolikoBitan = 3
     def cast(self):
+        self.currentCD = self._cooldown
         apb = ArcanePowerBuff(self.charNeonpewpew)
         self.charNeonpewpew.buffList[apb._name] = apb
     
@@ -325,7 +319,8 @@ class ArcanePowerBuff(Spell):
         listAffectedSpells = []
     
         Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,False,char)
-
+        
+        self._durationRemaining = self._duration
 class ArcaneMissilesBuff(Spell):
 
     def __init__(self,char):
@@ -342,14 +337,15 @@ class ArcaneMissilesBuff(Spell):
         self.stacks = 1
         Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,False,char)
         
+        self._durationRemaining = self._duration
            
     def getDmg(self):
         pass
     def applyStack(self):
         self._durationRemaining = self._durationRemaining
-        if ArcaneMissilesBuff.stacks<3:
-            ArcaneMissilesBuff.stacks+=1
-        #duration = 15
+        if self.stacks<3:
+            self.stacks+=1
+        
     
     def removeStacks(self):
         self.stacks = 0
@@ -375,7 +371,7 @@ class ArcaneCharge(Spell):
     
         Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,False,char)
         
-           
+        self._durationRemaining = self._duration
     def getDmg(self):
         d =  5*self.charNeonpewpew.spellPower*0.747
         d = d+d*self.charNeonpewpew.masteryP*self.charNeonpewpew._mana/self.charNeonpewpew._maxMana
@@ -403,17 +399,11 @@ class Evocation(Spell):
         channelTime = 0
         modifiers = None
         listAffectedSpells = []
-    
+        
+        self.kolikoBitan = 2
         Spell.__init__(self,name,cooldown,manaCost,castTime,duration,spellType,listAffectedSpells,modifiers,channelTime,True,char)
         
     def cast(self):
-#       currentMana = charNeonpewpew._mana/charNeonpewpew._maxMana
-
-        
-#     apb = EvocationBuff(self.charNeonpewpew)
-#     self.charNeonpewpew.buffList[apb._name] = apb
-        
-#        self._durationRemaining = self._duration
         self.currentCD = self._cooldown
   
         self.charNeonpewpew._mana+=self.charNeonpewpew._maxMana*0.15
@@ -424,7 +414,7 @@ class Evocation(Spell):
             self._duration = kolikoTraje
             
         self.charNeonpewpew._mana+=self.charNeonpewpew._maxMana*0.075*self._duration
-#             
+             
             
 #         if i<self.charNeonpewpew.GCDCalc():
 #             totalCastTime+=self.charNeonpewpew.GCDCalc()

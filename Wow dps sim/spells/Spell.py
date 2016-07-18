@@ -1,11 +1,6 @@
-'''
-Created on Jun 27, 2016
 
-@author: Neonkitza
-'''
 from spells.SpellType import SpellType
-#from characters.Neonpewpew import charNeonpewpew, totalCastTime
-#from allSpells.ArcanePower import ArcanePowerBuff
+
 '''from characters.Neonpewpew import charNeonpewpew'''
 from abc import ABCMeta, abstractmethod
 from allSpells import *

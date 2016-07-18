@@ -1,18 +1,7 @@
-'''
-Created on Jun 27, 2016
 
-@author: Neonkitza
-'''
-
-#from spells.SpellType import SpellType
-# from allSpells.ArcaneBarrage import ArcaneBarrage
-# from allSpells.ArcaneBlast import ArcaneBlast
-# #from allSpells.ArcaneCharge import ArcaneCharge
-# from allSpells.ArcaneExplosion import ArcaneExplosion
-# from allSpells.ArcaneMissiles import ArcaneMissiles
-# from allSpells.Evocation import Evocation
-#from allSpells.ArcanePower import ArcanePower
 from allSpells.allSpells import *
+import copy
+import allSpells
 
 class Neonpewpew:
     int = 4380
@@ -30,11 +19,7 @@ class Neonpewpew:
     haste = 1326
     mastery = 1371
     multistrike = 171
-#     spellList = {}
-#     castSpellList = {}
-#     castedSpellList = []
-#     buffList = {}
-    phase = "burst"
+    
     #phase changes to "conserve"
     def __init__(self):
         self._name = "Neonpewpew"
@@ -44,14 +29,10 @@ class Neonpewpew:
         self._baseGCD = 1.5
         self._statsChanged = False
         self._GCD = self.GCDCalc()
-#         self.haste = 1326
-#         self.hasteP = 0.1588
         self.spellList = []
         self.castSpellList = []
-        self.castedSpellList = []
         self.buffList = {}
-        
-        self.initSpells()
+        self.phase = "burst"
         
         
         
@@ -62,7 +43,6 @@ class Neonpewpew:
     def initSpells(self):
         self.castSpellList.append(ArcaneBarrage(self))
         self.castSpellList.append(ArcaneBlast(self))
-        self.castSpellList.append(ArcaneExplosion(self))
         self.castSpellList.append(ArcaneMissiles(self))
         self.castSpellList.append(Evocation(self))
         self.castSpellList.append(ArcanePower(self))
@@ -71,9 +51,9 @@ class Neonpewpew:
         self._mana+=2000
         if self._mana>self._maxMana:
             self._mana = self._maxMana
-# charNeonpewpew = Neonpewpew()
-# totalDMG = 0
-# endTime = 90
-# totalCastTime = 0
-
-        
+            
+    def copySpellList(self,spellList):
+        self.castSpellList = copy.deepcopy(spellList)
+    def resetChar(self):
+        self.buffList = {}
+        self._mana = self._maxMana

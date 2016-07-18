@@ -1,8 +1,4 @@
-'''
-Created on Jun 28, 2016
 
-@author: Neonkitza
-'''
 import threading
 import time
 from characters.Neonpewpew import charNeonpewpew, totalCastTime, endTime

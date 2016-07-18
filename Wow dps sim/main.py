@@ -1,8 +1,4 @@
-'''
-Created on Jun 27, 2016
 
-@author: Neonkitza
-'''
 from simulation.Population import Population
 from simulation.Algorithm import Algorithm
 
@@ -11,9 +7,11 @@ elapsedTime = 0
 END_TIME = 60
 
 
-prvaPopulacija = Population(10,True)
-while generationCount < 10:
-    generationCount+=1
+prvaPopulacija = Population(20,True)
+while generationCount < 20:
     print("Generacija: "+str(generationCount)+ " - Najbolji dmg: "+str(prvaPopulacija.getFittest().getTotalDmgDone()))
+    generationCount+=1
     prvaPopulacija = Algorithm.evolvePopulation(Algorithm,prvaPopulacija)
     
+
+print("Generacija: "+str(generationCount)+ " - Najbolji dmg: "+str(prvaPopulacija.getFittest().getTotalDmgDone()))
